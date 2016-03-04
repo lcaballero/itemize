@@ -10,7 +10,7 @@ import (
 )
 
 func Start() {
-	dbname := "items.db.json"
+	dbname := ""
 	data := make(chan *da.DataStore)
 
 	targets := NewTargets()
