@@ -7,7 +7,7 @@ import (
 )
 
 type DataStore struct {
-	data Data
+	data *Data
 }
 
 func LoadFromFile(dbname string) (*DataStore, error) {
@@ -40,5 +40,6 @@ func (d *DataStore) WriteTo(w io.Writer) (int64, error) {
 	if err != nil {
 		return 0, nil
 	}
-	return w.Write(bits)
+	n, err := w.Write(bits)
+	return int64(n), err
 }
