@@ -1,6 +1,6 @@
 # Introduction
 
-`itemize` small web server application for tracking TODOs (written in Go/Golang).
+`itemize` is small web server application for tracking TODOs (written in Go/Golang).
 Seriously...that's all it is.
 
 ## License
