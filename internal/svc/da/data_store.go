@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"sync"
 )
 
 type DataStore struct {
@@ -26,7 +27,15 @@ func LoadFromFile(dbname string) (*DataStore, error) {
 	return d, nil
 }
 
-func NewDataStore() (*DataStore, error) {
+func LoadDataStore(dbname string) (*DataStore, error) {
+	if dbname == "" {
+		return NewDefaultDataStore()
+	} else {
+		return LoadFromFile(dbname)
+	}
+}
+
+func NewDefaultDataStore() (*DataStore, error) {
 	d := &DataStore{
 		data: NewData().Add(NewUser()),
 	}
@@ -42,4 +51,20 @@ func (d *DataStore) WriteTo(w io.Writer) (int64, error) {
 	}
 	n, err := w.Write(bits)
 	return int64(n), err
+}
+
+func (d *DataStore) Items() []*Item {
+	return d.data.Items
+}
+
+func (d *DataStore) Users() []*User {
+	return d.data.Users
+}
+
+func (d *DataStore) AddUser(u *User) error {
+	lock := &sync.Mutex{}
+	lock.Lock()
+	d.data.Add(u)
+	lock.Unlock()
+	return nil
 }
