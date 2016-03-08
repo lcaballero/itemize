@@ -1,13 +1,11 @@
 extends ../layouts/default
 
 block main
-  .row
-    h1
-      a(href="/") Itemizer
+  include ../components/banner-link/banner-link
   .row
     h2 Item
   .row
-    table
+    table.u-full-width
       tbody
         tr
           th Title
@@ -16,6 +14,6 @@ block main
           th Summary
           td {{ .Summary }}
 
-    div
-      a.button(href="/edit/item/{{ .Id }}") edit
-      a.button(href="/items") view items
+  .row
+    a.button(href="/items") view items
+    a.button.button-primary.u-pull-right(href="/edit/item/{{ .Id }}") edit

@@ -2,10 +2,7 @@ extends ../layouts/default
 
 
 block main
-  .row
-    h1
-      a(href="/")
-        | Itemizer
+  include ../components/banner-link/banner-link
   .row
     h2 Users
   .row
@@ -24,3 +21,6 @@ block main
           td
             a.button(href="/user/{{ .Id }}") view user
         | {{ end }}
+
+  .row
+    a.button.button-primary(href="/new/user") add user

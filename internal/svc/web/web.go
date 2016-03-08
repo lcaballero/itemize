@@ -65,6 +65,7 @@ func (w *WebServer) run(client *da.AccessClient) {
 	e.Get("/item/:id", NewListEndpoint(client).Item)
 	e.Get("/edit/item/:id", NewListEndpoint(client).Edit)
 	e.Post("/update/item/:id", NewListEndpoint(client).Update)
+	e.Get("/complete/item/:id", NewListEndpoint(client).Complete)
 
 	e.Index(".www/dest/_site/html/index.html")
 	e.Static("/css", ".www/dest/_site/css")

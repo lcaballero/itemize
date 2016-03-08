@@ -1,29 +1,41 @@
 extends ../layouts/default
 
 block main
-  .row
-    h1
-      a(href="/")
-        | Itemizer
+  include ../components/banner-link/banner-link
   .row
     h2 Items
   .row
-    table
+    table.u-full-width
       thead
         tr
           th Title
           th Summary
           th Status
           th Details
+          th Complete
       tbody
         | {{ range $index, $element := . }}{{ with $element }}
         tr
           td {{ .Title }}
           td {{ .Summary }}
-          td {{ .Status }}
+          td
+            | {{ if (or (eq .ItemState 1) (eq .ItemState 0)) }}
+            |   Inception
+            | {{ else if (eq .ItemState 2) }}
+            |   Archived
+            | {{ else if (eq .ItemState 3) }}
+            |   In Progress
+            | {{ else if (eq .ItemState 4) }}
+            |   Backlog
+            | {{ else if (eq .ItemState 5) }}
+            |   Completed
+            | {{ end }}
           td
             a(href="/item/{{ .Id }}") view item
+          td
+            a(href="/complete/item/{{ .Id }}") complete item
         | {{ end }}{{ end }}
 
+  .row
     a.button.primary-button(href="/new/item") add item
 

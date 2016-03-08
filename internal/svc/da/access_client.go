@@ -52,7 +52,7 @@ func (d *AccessClient) Start() hitman.KillChannel {
 				return
 
 			case <-writeTic:
-				d.flush()
+				d.Flush()
 			}
 		}
 	}()
@@ -60,8 +60,11 @@ func (d *AccessClient) Start() hitman.KillChannel {
 	return done
 }
 
-func (d *AccessClient) flush() {
+func (d *AccessClient) Flush() {
 	d.DataStore(func(data *DataStore) {
+		if !data.modified {
+			return
+		}
 		log.Printf("Flushing data to file: %s\n", d.dbname)
 		file, err := os.Create(d.dbname)
 		if err != nil {
@@ -72,7 +75,9 @@ func (d *AccessClient) flush() {
 		_, err = data.WriteTo(file)
 		if err != nil {
 			log.Println("Error occured while writing data", err)
+			return
 		}
+		data.modified = true
 	})
 }
 
@@ -80,6 +85,7 @@ func (d *AccessClient) DataStore(fn access) {
 	defer d.lock.Unlock()
 	d.lock.Lock()
 	fn(d.store)
+
 }
 
 func (d *AccessClient) replaceItem(item Item) {
@@ -158,6 +164,21 @@ func (a *AccessClient) UpdateItem(id string, updated Item) (item Item, err error
 			if t.Id == id {
 				t.Title = updated.Title
 				t.Summary = updated.Summary
+				item, err = *t, nil
+				return
+			}
+		}
+		item, err = Item{}, errors.New("Couldn't find item to update")
+	})
+	return
+}
+
+func (a *AccessClient) UpdateItemState(id string, state ItemState) (item Item, err error) {
+	a.DataStore(func(storage *DataStore) {
+		for i := 0; i < len(storage.data.Items); i++ {
+			t := &storage.data.Items[i]
+			if t.Id == id {
+				t.ItemState = state
 				item, err = *t, nil
 				return
 			}

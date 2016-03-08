@@ -2,26 +2,19 @@ extends ../layouts/default
 
 
 block main
+  include ../components/banner-link/banner-link
   .row
-    h1
-      a(href="/") Itemizer
-  .row
-    h2 Users
-  .row
-    form(method="POST", action="/add/item")
-      dl
-        dt
-          label Title
-        dd
-          input(type="text", name="Title", id="Title")
-
-      dl
-        dt
-          label Summary
-        dd
-          input(type="text", name="Summary", id="Summary")
-
-      button(type="Submit") Submit
-
-      a.button.button-primary(href="/items")
+    h2 Item
+  form(method="POST", action="/add/item")
+    .row
+      .six.columns
+        label Title
+        input.u-full-width(type="text", name="Title", id="Title")
+    .row
+      label Summary
+      textarea.u-full-width(name="Summary", id="Summary")
+        | {{ .Summary }}
+    .row
+      a.button(href="/items")
         | see items
+      button.button-primary.u-pull-right(type="Submit") Submit

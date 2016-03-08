@@ -1,36 +1,27 @@
 extends ../layouts/default
 
 block main
-  .row
-    h1
-      a(href="/") Itemizer
+  include ../components/banner-link/banner-link
   .row
     h2 User
-  .row
-    form(method="POST", action="/add/user")
-      dl
-        dt
-          label Username:
-        dd
-          input(type="text", name="Username" id="Username")
-      dl
-        dt
-          label Email:
-        dd
-          input(type="text", name="Email", id="Email")
-      dl
-        dt
-          label First Name:
-        dd
-          input(type="text", name="FirstName", id="FirstName")
-      dl
-        dt
-          label Last Name:
-        dd
-          input(type="text", name="LastName", id="LastName")
+  form(method="POST", action="/add/user")
+    .row
+      .six.columns
+        label Username:
+        input.u-full-width(type="text", name="Username" id="Username")
+      .six.columns
+        label Email:
+        input.u-full-width(type="text", name="Email", id="Email")
+    .row
+      .six.columns
+        label First Name:
+        input.u-full-width(type="text", name="FirstName", id="FirstName")
+      .six.columns
+        label Last Name:
+        input.u-full-width(type="text", name="LastName", id="LastName")
 
+    .row
       button(type="Submit") Submit
-
       a.button.button-primary(href="/users")
         | see users
  

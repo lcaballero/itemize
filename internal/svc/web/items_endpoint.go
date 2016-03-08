@@ -23,7 +23,6 @@ func NewListEndpoint(client *da.AccessClient) *ListItems {
 
 func (m *ListItems) Read(c *echo.Context) error {
 	items := m.client.Items()
-	log.Println("items", items)
 	html, err := m.Render.Render(items, WebDir("list_items.html"))
 	if err != nil {
 		return err
@@ -101,6 +100,21 @@ func (m *ListItems) Create(c *echo.Context) error {
 	m.client.AddItem(*item)
 
 	html, err := m.Render.Render(item, WebDir("item.html"))
+	if err != nil {
+		return err
+	} else {
+		return c.HTML(http.StatusOK, html)
+	}
+}
+
+func (m *ListItems) Complete(c *echo.Context) error {
+	_, err := m.client.UpdateItemState(c.Param("id"), da.Completed)
+	if err != nil {
+		return err
+	}
+	items := m.client.Items()
+
+	html, err := m.Render.Render(items, WebDir("list_items.html"))
 	if err != nil {
 		return err
 	} else {
