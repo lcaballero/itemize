@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block main
+  .row
+    table
+      tbody
+        tr
+          th Username
+          td {{ .Username }}
+        tr
+          th Name
+          td {{ .LastName }}, {{ .FirstName }}
+        tr
+          th Email
+          td {{ .Email }}
+        tr
+          th Edit
+          td
+            a.button(href="/edit/user/{{ .Id }}") edit user
+
+    a.button(href="/users") view users

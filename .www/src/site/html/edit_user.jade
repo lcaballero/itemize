@@ -1,0 +1,33 @@
+extends ../layouts/default
+
+block main
+  .row
+    h1
+      a(href="/") Itemizer
+  .row
+    h2 Edit User
+  .row
+    form(method="POST", action="/update/user/{{ .Id }}")
+      dl
+        dt
+          label Username:
+        dd
+          input(type="text", name="Username" id="Username", value="{{ .Username }}")
+      dl
+        dt
+          label Email:
+        dd
+          input(type="text", name="Email", id="Email", value="{{ .Email }}")
+      dl
+        dt
+          label First Name:
+        dd
+          input(type="text", name="FirstName", id="FirstName", value="{{ .FirstName }}")
+      dl
+        dt
+          label Last Name:
+        dd
+          input(type="text", name="LastName", id="LastName", value="{{ .LastName }}")
+      button(type="Submit") Submit
+      a.button.button-primary(href="/users")
+        | see users

@@ -1,0 +1,36 @@
+extends ../layouts/default
+
+block main
+  .row
+    h1
+      a(href="/") Itemizer
+  .row
+    h2 User
+  .row
+    form(method="POST", action="/add/user")
+      dl
+        dt
+          label Username:
+        dd
+          input(type="text", name="Username" id="Username")
+      dl
+        dt
+          label Email:
+        dd
+          input(type="text", name="Email", id="Email")
+      dl
+        dt
+          label First Name:
+        dd
+          input(type="text", name="FirstName", id="FirstName")
+      dl
+        dt
+          label Last Name:
+        dd
+          input(type="text", name="LastName", id="LastName")
+
+      button(type="Submit") Submit
+
+      a.button.button-primary(href="/users")
+        | see users
+ 

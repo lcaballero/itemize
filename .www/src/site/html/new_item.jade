@@ -1,0 +1,27 @@
+extends ../layouts/default
+
+
+block main
+  .row
+    h1
+      a(href="/") Itemizer
+  .row
+    h2 Users
+  .row
+    form(method="POST", action="/add/item")
+      dl
+        dt
+          label Title
+        dd
+          input(type="text", name="Title", id="Title")
+
+      dl
+        dt
+          label Summary
+        dd
+          input(type="text", name="Summary", id="Summary")
+
+      button(type="Submit") Submit
+
+      a.button.button-primary(href="/items")
+        | see items

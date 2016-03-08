@@ -1,0 +1,28 @@
+extends ../layouts/default
+
+block main
+  .row
+    h1
+      a(href="/") Itemizer
+  .row
+    h2 Item
+  .row
+    form(method="POST", action="/update/item/{{ .Id }}")
+      table
+        tbody
+          tr
+            th
+              label Title
+            td
+              input(type="text", name="Title", id="Title", value="{{ .Title }}")
+          tr
+            th
+              label Summary
+            td
+              input(type="text", name="Summary", id="Summary", value="{{ .Summary }}")
+
+      div
+        span {{ .Id }}
+
+      div
+        button(type="Submit") Submit

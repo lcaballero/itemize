@@ -27,15 +27,7 @@ hs_err_pid*
 *.DS_Store
 
 ### misc
-doc/
-docs/
-node_modules/
+.www/dest/
 .files/
 .idea/
-pkg/
-bin/
 
-files/elasticsearch/
-src/tmp-*
-src/github.com/
-src/golang.org/

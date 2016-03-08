@@ -1,9 +1,11 @@
 package main
 
 import (
-	"github.com/lcaballero/itemize/internal/svc/start"
+	"os"
+
+	"github.com/lcaballero/itemize/internal/cli"
 )
 
 func main() {
-	start.Start()
+	cli.NewCli().Run(os.Args)
 }

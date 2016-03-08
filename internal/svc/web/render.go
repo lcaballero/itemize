@@ -1,37 +1,29 @@
 package web
+
 import (
-	"path/filepath"
-	"io/ioutil"
-	"html/template"
-	"log"
 	"bytes"
+	eng "html/template"
+	"log"
 )
 
+type Render struct{}
 
-type Render struct {
-	base string
+func NewRender(tmplBase, layoutBase string) *Render {
+	return &Render{}
 }
 
-func NewRender(base string) *Render {
-	return &Render{
-		base: base,
-	}
-}
-
-func (r *Render) Render(tpl string, data interface{}) (string, error) {
-	templateName := filepath.Join(r.base, tpl)
-	bits, _ := ioutil.ReadFile(templateName)
-	tmpl, err := template.New("list").Parse(string(bits))
+func (r *Render) Render(data interface{}, templates ...string) (string, error) {
+	tmpl, err := eng.ParseFiles(templates...)
 	if err != nil {
 		log.Println(err)
 		return "", err
 	}
-	buf := bytes.NewBuffer([]byte{})
 
 	if data == nil {
 		data = make(map[string]interface{})
 	}
 
+	buf := bytes.NewBuffer([]byte{})
 	err = tmpl.Execute(buf, data)
 	if err != nil {
 		log.Println(err)

@@ -3,56 +3,72 @@ package web
 import (
 	"log"
 
+	"path/filepath"
+
 	"github.com/labstack/echo"
 	"github.com/lcaballero/hitman"
 	"github.com/lcaballero/itemize/internal/svc/da"
 )
 
-const DefaultBaseTemplaDir = ".web/src/tmpl"
+const WebRoot = ".www/dest/_site/html"
+const DefaultTemplateBaseDir = ".web/src/templates/tmpl"
+const DefaultPartialsBaseDir = ".web/src/templates/partials"
+const DefaultLayoutBaseDir = ".web/src/templates/layout"
 
-type WebServer struct {
-	data chan *da.DataStore
+func WebDir(elem ...string) string {
+	elems := []string{WebRoot}
+	elems = append(elems, elem...)
+	return filepath.Join(elems...)
 }
 
-func NewWebServer(data chan *da.DataStore) (*WebServer, error) {
+type WebServer struct {
+	client *da.AccessClient
+}
+
+func NewWebServer(access *da.AccessClient) (*WebServer, error) {
 	w := &WebServer{
-		data: data,
+		client: access,
 	}
 	return w, nil
 }
 
 func (w *WebServer) Start() hitman.KillChannel {
 	done := hitman.NewKillChannel()
-
-	log.Println("Awaiting DataStore startup")
 	go func() {
+		go w.run(w.client)
 		for {
 			select {
 			case cleaner := <-done:
 				log.Println("Stopping web server")
 				cleaner.WaitGroup.Done()
 				return
-			case data := <-w.data:
-				go w.run(data)
 			}
 		}
 	}()
-
 	return done
 }
 
-func (w *WebServer) run(data *da.DataStore) {
+func (w *WebServer) run(client *da.AccessClient) {
 	log.Println("Starting web server")
+
 	e := echo.New()
-	e.Get("/items", NewListEndpoint(data).Read)
-	e.Get("/users", NewUsersEndpoint(data).Read)
-	e.Get("/new/user", NewUsersEndpoint(data).New)
-	e.Post("/add/user", NewUsersEndpoint(data).Create)
+	e.Get("/users", NewUsersEndpoint(client).Read)
+	e.Get("/new/user", NewUsersEndpoint(client).New)
+	e.Post("/add/user", NewUsersEndpoint(client).Create)
+	e.Get("/user/:id", NewUsersEndpoint(client).User)
+	e.Get("/edit/user/:id", NewUsersEndpoint(client).Edit)
+	e.Post("/update/user/:id", NewUsersEndpoint(client).Update)
 
+	e.Get("/items", NewListEndpoint(client).Read)
+	e.Get("/new/item", NewListEndpoint(client).New)
+	e.Post("/add/item", NewListEndpoint(client).Create)
+	e.Get("/item/:id", NewListEndpoint(client).Item)
+	e.Get("/edit/item/:id", NewListEndpoint(client).Edit)
+	e.Post("/update/item/:id", NewListEndpoint(client).Update)
 
-	e.Index(".web/src/html/index.html")
-	e.Static("/js", ".web/src/js")
-	e.Static("/css", ".web/src/css")
-	e.Static("/html", ".web/src/html")
+	e.Index(".www/dest/_site/html/index.html")
+	e.Static("/css", ".www/dest/_site/css")
+
+	log.Println("Web started :2222")
 	e.Run(":2222")
 }

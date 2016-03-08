@@ -18,12 +18,13 @@ type User struct {
 	UserState    int
 }
 
-func NewUser() *User {
-	return &User{
+func NewUser() User {
+	return User{
 		Id: uuid.New(),
+		CreatedOn: time.Now(),
 	}
 }
 
-func (u *User) IsValid() bool {
+func (u User) IsValid() bool {
 	return u.FirstName != "" && u.Id != ""
 }
