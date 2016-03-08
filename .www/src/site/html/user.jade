@@ -1,8 +1,11 @@
 extends ../layouts/default
 
 block main
+  include ../components/banner-link/banner-link
   .row
-    table
+    h2 View User
+  .row
+    table.u-full-width
       tbody
         tr
           th Username
@@ -13,9 +16,7 @@ block main
         tr
           th Email
           td {{ .Email }}
-        tr
-          th Edit
-          td
-            a.button(href="/edit/user/{{ .Id }}") edit user
 
+  .row
     a.button(href="/users") view users
+    a.button.button-primary.u-pull-right(href="/edit/user/{{ .Id }}") edit user

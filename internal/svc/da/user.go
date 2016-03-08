@@ -14,14 +14,16 @@ type User struct {
 	LastName     string
 	Email        string
 	Icon         string
-	RecordStatus int
-	UserState    int
+	RecordStatus RecordStatus
+	UserState    UserState
 }
 
 func NewUser() User {
 	return User{
-		Id: uuid.New(),
-		CreatedOn: time.Now(),
+		Id:           uuid.New(),
+		CreatedOn:    time.Now(),
+		RecordStatus: Active,
+		UserState:    Normal,
 	}
 }
 

@@ -2,10 +2,4 @@ extends ../layouts/default.jade
 
 
 block main
-  .row
-    h1
-      | Itemize
-  .row
-    a.button(href="/users") Users
-    a.button(href="/new/user") Add User
-    a.button(href="/items") Items
+  include ../components/banner-link/banner-link

@@ -7,7 +7,8 @@ import (
 )
 
 type DataStore struct {
-	data *Data
+	data     *Data
+	modified bool
 }
 
 func LoadFromFile(dbname string) (*DataStore, error) {

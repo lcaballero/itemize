@@ -12,14 +12,17 @@ type Item struct {
 	Title        string
 	Summary      string
 	OwnersId     string
-	Status       int
-	RecordStatus int
+	ItemState    ItemState
+	RecordStatus RecordStatus
+	Position     int
 }
 
 func NewItem() *Item {
 	return &Item{
-		Id: uuid.New(),
-		CreatedOn: time.Now(),
+		Id:           uuid.New(),
+		CreatedOn:    time.Now(),
+		ItemState:    Inception,
+		RecordStatus: Active,
 	}
 }
 

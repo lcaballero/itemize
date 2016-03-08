@@ -3,10 +3,11 @@ package da
 type ItemState int
 
 const (
-	InitialCreation ItemState = 1
-	InArchived      ItemState = 2
-	InProgress      ItemState = 3
-	InBacklog       ItemState = 4
+	Inception  ItemState = 1
+	InArchived ItemState = 2
+	InProgress ItemState = 3
+	InBacklog  ItemState = 4
+	Completed  ItemState = 5
 )
 
 type RecordStatus int
