@@ -1,0 +1,26 @@
+extends ../layouts/default
+
+
+block main
+  .row
+    h1
+      a(href="/")
+        | Itemizer
+  .row
+    h2 Users
+  .row
+    table
+      thead
+        th Username
+        th Name
+        th Email
+        th Details
+      tbody
+        | {{ range . }}
+        tr
+          td {{ .Username }}
+          td {{ .LastName }}, {{ .FirstName }}
+          td {{ .Email }}
+          td
+            a.button(href="/user/{{ .Id }}") view user
+        | {{ end }}

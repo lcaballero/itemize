@@ -1,0 +1,29 @@
+extends ../layouts/default
+
+block main
+  .row
+    h1
+      a(href="/")
+        | Itemizer
+  .row
+    h2 Items
+  .row
+    table
+      thead
+        tr
+          th Title
+          th Summary
+          th Status
+          th Details
+      tbody
+        | {{ range $index, $element := . }}{{ with $element }}
+        tr
+          td {{ .Title }}
+          td {{ .Summary }}
+          td {{ .Status }}
+          td
+            a(href="/item/{{ .Id }}") view item
+        | {{ end }}{{ end }}
+
+    a.button.primary-button(href="/new/item") add item
+

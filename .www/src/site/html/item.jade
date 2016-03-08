@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block main
+  .row
+    h1
+      a(href="/") Itemizer
+  .row
+    h2 Item
+  .row
+    table
+      tbody
+        tr
+          th Title
+          td {{ .Title }}
+        tr
+          th Summary
+          td {{ .Summary }}
+
+    div
+      a.button(href="/edit/item/{{ .Id }}") edit
+      a.button(href="/items") view items

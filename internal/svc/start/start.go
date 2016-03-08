@@ -3,29 +3,20 @@ package start
 import (
 	"syscall"
 
+	cmd "github.com/codegangsta/cli"
 	"github.com/lcaballero/hitman"
 	"github.com/lcaballero/itemize/internal/svc/da"
 	"github.com/lcaballero/itemize/internal/svc/web"
 	"github.com/vrecan/death"
 )
 
-func Start() {
-	dbname := ""
-	data := make(chan *da.DataStore)
+func Start(cli *cmd.Context) {
+	dbname := cli.String("filename")
 
-	targets := NewTargets()
-	targets.AddOrPanic(web.NewWebServer(data))
-	targets.AddOrPanic(da.NewDataWriter(dbname, data))
+	client, err := da.NewAccessClient(dbname)
+	targets := hitman.NewTargets()
+	targets.AddOrPanic(client, err)
+	targets.AddOrPanic(web.NewWebServer(client))
 
 	death.NewDeath(syscall.SIGTERM, syscall.SIGINT).WaitForDeath(targets)
-}
-
-type Targets struct {
-	hitman.Targets
-}
-
-func NewTargets() *Targets {
-	return &Targets{
-		Targets: hitman.NewTargets(),
-	}
 }
